@@ -1,4 +1,4 @@
-package com.jh.kdh_project._common.entity;
+package com.jh.kdh_project.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

@@ -1,10 +1,7 @@
 package com.jh.kdh_project.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @ToString(exclude="user")
+@Builder
 public class Board extends BaseEntity{
 
     @Id
@@ -41,9 +39,6 @@ public class Board extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="board_type_code")
     private BoardType boardType;
-
-    @OneToMany(mappedBy = "board")
-    private List<InterestBoard> interestBoards = new ArrayList<>();
 
     public void changeBoardCode(int boardCode) {
         this.boardCode = boardCode;

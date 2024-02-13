@@ -1,10 +1,7 @@
 package com.jh.kdh_project.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Table(name="team")
@@ -12,6 +9,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @ToString
+@Builder
 public class Team {
 
     @Id
@@ -19,7 +17,7 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int teamCode;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name="dept_code")
     private Department department;
 

@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -29,9 +27,6 @@ public class Board extends BaseEntity{
     @Column(name="view_count")
     private int viewCount;
 
-    @Column(name="delete_date")
-    private LocalDateTime deleteDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_code")
     private User user;
@@ -39,6 +34,9 @@ public class Board extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="board_type_code")
     private BoardType boardType;
+
+    @Column(name="delete_date", nullable = true)
+    private LocalDateTime deleteDate;
 
     public void changeBoardCode(int boardCode) {
         this.boardCode = boardCode;
@@ -56,6 +54,6 @@ public class Board extends BaseEntity{
         this.viewCount = viewCount;
     }
 
-    public void changeBoardDeletedAt(LocalDateTime deleteDate) {this.deleteDate=deleteDate;}
+    public void changeBoardDeletedAt(LocalDateTime deleteDate) { this.deleteDate = deleteDate; }
 
 }

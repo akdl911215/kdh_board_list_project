@@ -23,18 +23,8 @@ public class BaseEntity {
     @Column(name="update_date")
     private LocalDateTime updateDate;
 
+    @LastModifiedDate
     @Column(name="delete_date", nullable = true)
     private LocalDateTime deleteDate;
 
-    public void registerDate(LocalDateTime registerDate) {
-        this.registerDate=registerDate;
-    }
-
-    public void updateDate(LocalDateTime updateDate) {
-        this.updateDate=updateDate;
-    }
-
-    public void deleteDate(LocalDateTime deleteDate) {
-        this.deleteDate=deleteDate;
-    }
 }

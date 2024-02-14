@@ -10,7 +10,7 @@ import lombok.*;
 @Getter
 @ToString
 @Builder
-public class Team {
+public class Team extends BaseEntity {
 
     @Id
     @Column(name="team_code")

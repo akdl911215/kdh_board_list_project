@@ -1,5 +1,6 @@
 package com.jh.kdh_project.service;
 
+import com.jh.kdh_project._common.exception.NotFoundException;
 import com.jh.kdh_project.dto.BoardDTO;
 import com.jh.kdh_project.dto.PageRequestDTO;
 import com.jh.kdh_project.dto.PageResultDTO;
@@ -11,11 +12,15 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.coyote.BadRequestException;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.function.Function;
 
 
@@ -25,6 +30,43 @@ import java.util.function.Function;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+
+    @Override
+    public BoardDTO remove(Integer boardCode) {
+
+        Optional<Board> board = boardRepository.findById(boardCode);
+
+        if (!board.isPresent()) {
+            throw new NotFoundException("NOTFOUND BOARD");
+        }
+
+        Board entity = board.get();
+
+        LocalDateTime dateTime = LocalDateTime.now();
+        entity.changeBoardDeletedAt(dateTime);
+        System.out.println("entity : " + entity);
+
+        Board convertBoard = boardRepository.save(entity);
+        System.out.println("convertBoard : " + convertBoard);
+
+        BoardDTO response = entityToDto(convertBoard);
+        System.out.println("response : " + response);
+        return response;
+    }
+
+    @Override
+    public BoardDTO read(Integer boardCode) throws NotFoundException {
+
+        Optional<Board> board = boardRepository.findById(boardCode);
+
+        if (!board.isPresent()) {
+            throw new NotFoundException("NOTFOUND BOARD");
+        }
+
+        Board entity = board.get();
+
+        return entityToDto(entity);
+    }
 
     @Override
     public BoardDTO register(BoardDTO boardDTO, UserDTO userDTO) {
@@ -47,10 +89,11 @@ public class BoardServiceImpl implements BoardService {
 
         Page<Board> result = boardRepository.findAll(booleanBuilder, pageable); // Querydsl 사용
 
-        Function<Board, BoardDTO> fn = (entity -> getListEntityToDto(entity));
+        Function<Board, BoardDTO> fn = (entity -> entityToDto(entity));
 
         return new PageResultDTO<>(result, fn);
     }
+
 
     private BooleanBuilder getSearch(PageRequestDTO pageRequestDTO) {
         // Querydsl 처리

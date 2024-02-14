@@ -6,12 +6,17 @@ import com.jh.kdh_project.dto.PageResultDTO;
 import com.jh.kdh_project.dto.UserDTO;
 import com.jh.kdh_project.entity.Board;
 import com.jh.kdh_project.entity.User;
+import org.apache.coyote.BadRequestException;
 
 public interface BoardService {
 
     BoardDTO register(BoardDTO boardDTO, UserDTO userDTO);
 
+    BoardDTO read(Integer boardCode);
+
     PageResultDTO<BoardDTO, Board> getList(PageRequestDTO pageRequestDTO);
+
+    BoardDTO remove(Integer boardCode);
 
     default Board registerDtoToEntity(BoardDTO boardDTO, UserDTO userDTO) {
         User user = User.builder()
@@ -22,7 +27,7 @@ public interface BoardService {
                 .title(boardDTO.getTitle())
                 .content(boardDTO.getContent())
                 .viewCount(boardDTO.getViewCount())
-//                .boardType(boardDTO.getBoardCode())
+                .boardType(boardDTO.getBoardTypeCode())
                 .user(user)
                 .build();
 
@@ -41,13 +46,13 @@ public interface BoardService {
                 .userName(board.getUser().getUserName())
 //                .teamName(board.getUser().getTeam().getTeamName())
                 .userCode(board.getUser().getUserCode())
-                .boardTypeCode(board.getBoardCode())
+                .boardTypeCode(board.getBoardType())
                 .build();
 
         return dto;
     }
 
-    default BoardDTO getListEntityToDto(Board entity) {
+    default BoardDTO entityToDto(Board entity) {
         BoardDTO boardDTO = BoardDTO.builder()
                 .boardCode(entity.getBoardCode())
                 .title(entity.getTitle())
@@ -61,9 +66,10 @@ public interface BoardService {
                 .deptName(entity.getUser().getTeam().getDepartment().getDeptName())
                 .teamName(entity.getUser().getTeam().getTeamName())
                 .userCode(entity.getUser().getUserCode())
-                .boardTypeCode(entity.getBoardType().getBoardTypeCode())
+                .boardTypeCode(entity.getBoardType())
                 .build();
 
         return boardDTO;
     }
+
 }

@@ -12,8 +12,6 @@ import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.coyote.BadRequestException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -66,6 +64,18 @@ public class BoardServiceImpl implements BoardService {
         Board entity = board.get();
 
         return entityToDto(entity);
+    }
+
+    @Override
+    public BoardDTO update(BoardDTO boardDTO, UserDTO userDTO) {
+
+        Board entity = updateDtoToEntity(boardDTO, userDTO);
+
+        boardRepository.save(entity);
+
+        BoardDTO convertDto = updateEntityToDto(entity);
+
+        return convertDto;
     }
 
     @Override

@@ -9,7 +9,6 @@ import com.jh.kdh_project.entity.BoardType;
 import com.jh.kdh_project.entity.User;
 import com.jh.kdh_project.repository.BoardTypeRepository;
 import com.jh.kdh_project.repository.UserRepository;
-import org.apache.coyote.BadRequestException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -92,6 +91,43 @@ public class BoardServiceTests {
         BoardDTO response = boardService.read(boardCode);
         System.out.println(response);
 
+    }
+
+    @Test
+    public void testUpdate() {
+        Integer userCode = 66;
+        Optional<User> result = userRepository.findById(userCode);
+
+        if (result.isPresent()) {
+            User user = result.get();
+
+            UserDTO userDTO = UserDTO.builder()
+                    .userCode(user.getUserCode())
+                    .userRank(user.getUserRank())
+                    .deptName(user.getTeam().getDepartment().getDeptName())
+                    .teamName(user.getTeam().getTeamName())
+                    .userName(user.getUserName())
+                    .build();
+
+            Optional<BoardType> boardType = boardTypeRepository.findById(1);
+            BoardType type = boardType.get();
+
+            BoardDTO boardDTO = BoardDTO.builder()
+                    .boardCode(1)
+                    .title("update title")
+                    .content("update content")
+                    .viewCount(userCode)
+                    .userName(user.getUserName())
+                    .userRank(user.getUserRank())
+                    .userCode(user.getUserCode())
+                    .deptName(user.getTeam().getDepartment().getDeptName())
+                    .teamName(user.getTeam().getTeamName())
+                    .boardTypeCode(type)
+                    .build();
+
+            BoardDTO response = boardService.update(boardDTO, userDTO);
+            System.out.println(response);
+        }
     }
 
     @Test

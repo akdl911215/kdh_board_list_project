@@ -7,6 +7,7 @@ import com.jh.kdh_project.dto.PageResultDTO;
 import com.jh.kdh_project.dto.UserDTO;
 import com.jh.kdh_project.entity.Board;
 import com.jh.kdh_project.entity.QBoard;
+import com.jh.kdh_project.entity.QBoardTypeList;
 import com.jh.kdh_project.repository.BoardRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -96,8 +97,10 @@ public class BoardServiceImpl implements BoardService {
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("boardCode").descending());
 
         BooleanBuilder booleanBuilder = getSearch(pageRequestDTO);
+        log.info("getList booleanBuilder : " + booleanBuilder);
 
         Page<Board> result = boardRepository.findAll(booleanBuilder, pageable); // Querydsl 사용
+        log.info("result : " + result);
 
         Function<Board, BoardDTO> fn = (entity -> entityToDto(entity));
 
@@ -108,18 +111,29 @@ public class BoardServiceImpl implements BoardService {
     private BooleanBuilder getSearch(PageRequestDTO pageRequestDTO) {
         // Querydsl 처리
 
+        log.info("pageRequestDTO : " + pageRequestDTO);
+
         String type = pageRequestDTO.getType();
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
 
         QBoard qBoard = QBoard.board;
+        log.info("qBoard : " + qBoard);
 
         String keyword = pageRequestDTO.getKeyword();
+        log.info("keyword : " + keyword);
 
         BooleanExpression expression = qBoard.boardCode.gt(0);
         // boardCode > 0
+        log.info("expression : " + expression);
 
         booleanBuilder.and(expression);
+
+        Integer boardTypeCode = pageRequestDTO.getBoardTypeCode();
+        BooleanExpression typeCodeExpression = QBoard.board.boardType.boardTypeCode.eq(boardTypeCode);
+        log.info("typeCodeExpression : " + typeCodeExpression);
+
+        booleanBuilder.and(typeCodeExpression);
 
         if (type == null || type.trim().length() == 0) {
 
@@ -129,6 +143,7 @@ public class BoardServiceImpl implements BoardService {
 
         // 검색 조건을 작성하기
         BooleanBuilder conditionBuilder = new BooleanBuilder();
+        log.info("conditionBuilder : " + conditionBuilder);
 
         if (type.contains("t")) { // 제목
             conditionBuilder.or(qBoard.title.contains(keyword));

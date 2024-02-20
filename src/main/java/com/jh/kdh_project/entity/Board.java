@@ -9,33 +9,33 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude="user")
+@ToString(exclude = "user")
 @Builder
 public class Board extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="board_code")
+    @Column(name = "board_code")
     private int boardCode;
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
-    @Column(name="content")
+    @Column(name = "content")
     private String content;
 
-    @Column(name="view_count")
+    @Column(name = "view_count")
     private int viewCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_code")
+    @JoinColumn(name = "user_code")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="board_type_code")
-    private BoardType boardType;
+    @JoinColumn(name = "board_type_code")
+    private BoardTypeList boardType;
 
-    @Column(name="delete_date", nullable = true)
+    @Column(name = "delete_date", nullable = true)
     private LocalDateTime deleteDate;
 
     public void changeBoardCode(int boardCode) {

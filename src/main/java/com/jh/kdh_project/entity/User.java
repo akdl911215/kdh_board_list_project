@@ -34,8 +34,8 @@ public class User {
     @Column(name="phone")
     private String phone;
 
-    @Column(name="ent_date")
-    private Date entDate;
+    @Column(name="end_date")
+    private Date endDate;
 
     @Column(name="resign_date")
     private Date resignDate;

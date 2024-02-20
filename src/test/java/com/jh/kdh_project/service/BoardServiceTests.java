@@ -5,7 +5,7 @@ import com.jh.kdh_project.dto.PageRequestDTO;
 import com.jh.kdh_project.dto.PageResultDTO;
 import com.jh.kdh_project.dto.UserDTO;
 import com.jh.kdh_project.entity.Board;
-import com.jh.kdh_project.entity.BoardType;
+import com.jh.kdh_project.entity.BoardTypeList;
 import com.jh.kdh_project.entity.User;
 import com.jh.kdh_project.repository.BoardTypeRepository;
 import com.jh.kdh_project.repository.UserRepository;
@@ -44,8 +44,9 @@ public class BoardServiceTests {
         PageRequestDTO pageRequestDTO = PageRequestDTO.builder()
                 .page(1)
                 .size(10)
-                .type("c")
+                .type("t")
                 .keyword("1")
+                .boardTypeCode(1)
                 .build();
 
         PageResultDTO<BoardDTO, Board> resultDTO = boardService.getList(pageRequestDTO);
@@ -67,7 +68,7 @@ public class BoardServiceTests {
     @Test
     public void testList() {
 
-        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(10).build();
+        PageRequestDTO pageRequestDTO = PageRequestDTO.builder().page(1).size(10).boardTypeCode(1).build();
 
         PageResultDTO<BoardDTO, Board> resultDTO = boardService.getList(pageRequestDTO);
 
@@ -109,8 +110,8 @@ public class BoardServiceTests {
                     .userName(user.getUserName())
                     .build();
 
-            Optional<BoardType> boardType = boardTypeRepository.findById(1);
-            BoardType type = boardType.get();
+            Optional<BoardTypeList> boardType = boardTypeRepository.findById(1);
+            BoardTypeList type = boardType.get();
 
             BoardDTO boardDTO = BoardDTO.builder()
                     .boardCode(1)
@@ -151,8 +152,8 @@ public class BoardServiceTests {
                     .userName(user.getUserName())
                     .build();
 
-            Optional<BoardType> boardType = boardTypeRepository.findById(1);
-            BoardType type = boardType.get();
+            Optional<BoardTypeList> boardType = boardTypeRepository.findById(1);
+            BoardTypeList type = boardType.get();
 
             BoardDTO boardDTO = BoardDTO.builder()
                     .title("sample title")

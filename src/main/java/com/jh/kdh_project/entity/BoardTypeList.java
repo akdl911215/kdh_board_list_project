@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name="board_type")
+@Table(name="board_type_list")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @ToString
-public class BoardType {
+public class BoardTypeList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

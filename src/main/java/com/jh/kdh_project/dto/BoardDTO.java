@@ -1,6 +1,6 @@
 package com.jh.kdh_project.dto;
 
-import com.jh.kdh_project.entity.BoardType;
+import com.jh.kdh_project.entity.BoardTypeList;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,5 +26,5 @@ public class BoardDTO {
     private String deptName;
     private String teamName;
     private int userCode;
-    private BoardType boardTypeCode;
+    private BoardTypeList boardTypeCode;
 }

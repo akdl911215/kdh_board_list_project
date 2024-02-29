@@ -64,7 +64,10 @@ public class BoardServiceImpl implements BoardService {
 
         Board entity = board.get();
 
-        return entityToDto(entity);
+        BoardDTO response = entityToDto(entity);
+        log.info("response : " + response);
+
+        return response;
     }
 
     @Override
